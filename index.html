@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrainForge AI — Complete AI Developer API Platform</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .hero-section {
+      padding: 5rem 1rem 4rem;
+      text-align: center;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid var(--border-focus);
+      color: var(--accent-neon);
+      padding: 0.35rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+    .hero-title {
+      font-size: 3.25rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+      background: linear-gradient(180deg, #ffffff 40%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      max-width: 720px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.6;
+    }
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 3.5rem;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin: 3rem 0;
+    }
+    .landing-nav {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .landing-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .landing-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+    .landing-link:hover {
+      color: var(--accent-neon);
+    }
+  </style>
+</head>
+<body style="display: block;">
+
+  <!-- Top Header Navigation -->
+  <header class="landing-nav">
+    <a href="/" class="sidebar-brand" style="border: none; padding: 0;">
+      <div class="brand-icon">⚡</div>
+      <div class="brand-title">BrainForge <span>AI</span></div>
+    </a>
+    <nav class="landing-links">
+      <a href="/dashboard" class="landing-link">Dashboard</a>
+      <a href="/playground" class="landing-link">Playground</a>
+      <a href="/models" class="landing-link">Models</a>
+      <a href="/api-keys" class="landing-link">API Keys</a>
+      <a href="/usage" class="landing-link">Usage</a>
+      <a href="/docs" class="landing-link">API Docs</a>
+      <a href="/playground" class="btn btn-primary btn-sm">Launch Playground →</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="content-container">
+    <section class="hero-section">
+      <div class="hero-badge">
+        <span>⚡ Production-Ready Developer Platform</span>
+      </div>
+      <h1 class="hero-title">High-Performance AI API Platform for Modern Engineering</h1>
+      <p class="hero-subtitle">
+        Deploy, test, and integrate five specialized AI model identities through an OpenAI-compatible REST API. Featuring cryptographically hashed API keys, Server-Sent Events progressive streaming, model routing, and real-time usage telemetry.
+      </p>
+      <div class="hero-actions">
+        <a href="/playground" class="btn btn-primary" style="padding: 0.85rem 1.75rem; font-size: 1rem;">
+          ⚡ Launch Interactive Playground
+        </a>
+        <a href="/dashboard" class="btn btn-secondary" style="padding: 0.85rem 1.75rem; font-size: 1rem;">
+          📊 Open Dashboard
+        </a>
+        <a href="/docs" class="btn btn-secondary" style="padding: 0.85rem 1.75rem; font-size: 1rem;">
+          📚 Explore REST API Docs
+        </a>
+      </div>
+
+      <!-- Live Platform Stats -->
+      <div class="stat-grid" style="text-align: left; max-width: 960px; margin: 0 auto;">
+        <div class="stat-card">
+          <div class="stat-label">Model Identities</div>
+          <div class="stat-value" style="color: var(--accent-neon);">5 Active</div>
+          <div class="stat-subtext">Calibrated router profiles</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Key Vault</div>
+          <div class="stat-value" style="color: #ffffff;">SHA-256</div>
+          <div class="stat-subtext highlight">Zero plaintext persistence</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Streaming</div>
+          <div class="stat-value" style="color: var(--accent-neon);">SSE Native</div>
+          <div class="stat-subtext">Progressive token delivery</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Provider Layer</div>
+          <div class="stat-value" style="color: #ffffff;">Modular</div>
+          <div class="stat-subtext">Demo mode + Real adapters</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section style="margin: 4rem auto; max-width: 1040px;">
+      <div class="card" style="border-color: var(--border-focus); background: rgba(13, 20, 16, 0.85);">
+        <div class="card-header">
+          <div class="card-title">
+            <span>⚡ Architecture & End-to-End Execution Flow</span>
+          </div>
+          <span class="badge badge-success">Fully Functional Backend</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; text-align: center; padding: 1rem 0;">
+          <div style="background: rgba(0,0,0,0.4); padding: 1.25rem 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+            <div style="font-size: 1.5rem; margin-bottom: 0.35rem;">💻</div>
+            <div style="font-weight: 700; font-size: 0.95rem; color: #ffffff;">Client App</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;">Browser or HTTP Client</div>
+          </div>
+          <div style="background: rgba(0,0,0,0.4); padding: 1.25rem 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+            <div style="font-size: 1.5rem; margin-bottom: 0.35rem;">🛡️</div>
+            <div style="font-weight: 700; font-size: 0.95rem; color: #ffffff;">Auth & Limits</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;">Bearer Token & Quotas</div>
+          </div>
+          <div style="background: rgba(0,0,0,0.4); padding: 1.25rem 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-focus);">
+            <div style="font-size: 1.5rem; margin-bottom: 0.35rem;">🔀</div>
+            <div style="font-weight: 700; font-size: 0.95rem; color: var(--accent-neon);">Model Router</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;">5 Unique Identities</div>
+          </div>
+          <div style="background: rgba(0,0,0,0.4); padding: 1.25rem 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+            <div style="font-size: 1.5rem; margin-bottom: 0.35rem;">🔌</div>
+            <div style="font-weight: 700; font-size: 0.95rem; color: #ffffff;">Provider Adapter</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;">Demo or Real AI</div>
+          </div>
+          <div style="background: rgba(0,0,0,0.4); padding: 1.25rem 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+            <div style="font-size: 1.5rem; margin-bottom: 0.35rem;">📊</div>
+            <div style="font-weight: 700; font-size: 0.95rem; color: #ffffff;">Telemetry DB</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;">Latency & Usage Logs</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Five Models Grid -->
+    <section style="margin: 4rem 0;">
+      <div style="text-align: center; margin-bottom: 2.5rem;">
+        <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">Five Calibrated AI Model Identities</h2>
+        <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto;">BrainForge routes requests to specialized model profiles tuned for specific engineering workloads.</p>
+      </div>
+
+      <div class="feature-grid">
+        <div class="card">
+          <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">🧠</div>
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.25rem;">ForgeMind Core</h3>
+          <code style="color: var(--accent-neon); font-size: 0.82rem;">forgemind-core</code>
+          <p style="color: var(--text-secondary); font-size: 0.88rem; margin: 0.75rem 0;">Versatile intelligence for general reasoning, explanations, summarization, and content drafting.</p>
+          <div style="font-size: 0.78rem; color: var(--text-muted);">128k context • Everyday AI</div>
+        </div>
+
+        <div class="card">
+          <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">📐</div>
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.25rem;">NovaLogic</h3>
+          <code style="color: var(--accent-neon); font-size: 0.82rem;">novalogic</code>
+          <p style="color: var(--text-secondary); font-size: 0.88rem; margin: 0.75rem 0;">Analytical engine for formal mathematics, symbolic logic, proof construction, and multi-step deduction.</p>
+          <div style="font-size: 0.78rem; color: var(--text-muted);">128k context • Logic & Proofs</div>
+        </div>
+
+        <div class="card">
+          <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">💻</div>
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.25rem;">CodePulse</h3>
+          <code style="color: var(--accent-neon); font-size: 0.82rem;">codepulse</code>
+          <p style="color: var(--text-secondary); font-size: 0.88rem; margin: 0.75rem 0;">Code intelligence model for full-stack programming, algorithmic design, syntax troubleshooting, and architecture evaluation.</p>
+          <div style="font-size: 0.78rem; color: var(--text-muted);">128k context • Full-Stack Code</div>
+        </div>
+
+        <div class="card">
+          <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">⚡</div>
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.25rem;">SwiftBrain</h3>
+          <code style="color: var(--accent-neon); font-size: 0.82rem;">swiftbrain</code>
+          <p style="color: var(--text-secondary); font-size: 0.88rem; margin: 0.75rem 0;">High-velocity, lightweight model designed for ultra-low latency, succinct summaries, command parsing, and instant responses.</p>
+          <div style="font-size: 0.78rem; color: var(--text-muted);">64k context • Sub-200ms Latency</div>
+        </div>
+
+        <div class="card">
+          <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">🔬</div>
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.25rem;">DeepForge</h3>
+          <code style="color: var(--accent-neon); font-size: 0.82rem;">deepforge</code>
+          <p style="color: var(--text-secondary); font-size: 0.88rem; margin: 0.75rem 0;">Advanced deep-synthesis engine engineered for comprehensive research reports, multi-faceted analysis, and long-form structured documents.</p>
+          <div style="font-size: 0.78rem; color: var(--text-muted);">256k context • Deep Research</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Code Quickstart -->
+    <section style="margin: 4rem auto; max-width: 960px;">
+      <div class="card" style="padding: 2rem;">
+        <div class="card-header">
+          <div class="card-title">
+            <span>🚀 Instant Integration Example</span>
+          </div>
+          <a href="/docs" class="btn btn-secondary btn-sm">Full API Docs →</a>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+          Connect using any HTTP client or OpenAI SDK compatible library. Simply point your base URL to <code style="color: var(--accent-neon); font-family: var(--font-mono);">http://localhost:5000/v1</code>.
+        </p>
+
+        <div class="code-block-wrapper">
+          <div class="code-header">
+            <span>cURL • Chat Completions Streaming</span>
+            <button class="btn-copy" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText)">Copy cURL</button>
+          </div>
+          <pre class="code-content"><code>curl -X POST http://localhost:5000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer bf_live_YOUR_API_KEY" \
+  -d '{
+    "model": "codepulse",
+    "messages": [
+      {"role": "user", "content": "Create a JavaScript calculator"}
+    ],
+    "stream": true
+  }'</code></pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer style="border-top: 1px solid var(--border-subtle); padding: 2.5rem 2rem; text-align: center; color: var(--text-muted); font-size: 0.88rem; background: var(--bg-secondary);">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="color: var(--accent-neon); font-weight: bold;">⚡ BrainForge AI</span>
+        <span>— Developer API Platform</span>
+      </div>
+      <div style="display: flex; gap: 1.5rem;">
+        <a href="/dashboard" class="landing-link">Dashboard</a>
+        <a href="/playground" class="landing-link">Playground</a>
+        <a href="/models" class="landing-link">Models</a>
+        <a href="/api-keys" class="landing-link">API Keys</a>
+        <a href="/docs" class="landing-link">Documentation</a>
+        <a href="/settings" class="landing-link">Settings</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/common.js"></script>
+</body>
+</html>
