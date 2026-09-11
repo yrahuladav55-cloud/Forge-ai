@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elex AI — Frontier Autonomous Intelligence & Studio</title>
+  <meta name="description" content="Elex AI: Fast, versatile, all-rounder AI assistant capable of coding, writing, web design, and complex automation with instant zero-config brain.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%230a0f0d%22 stroke=%22%2310b981%22 stroke-width=%228%22/><path d=%22M30 50 L45 35 L70 65%22 stroke=%22%2334d399%22 stroke-width=%228%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 fill=%22none%22/><circle cx=%2270%22 cy=%2235%22 r=%228%22 fill=%22%2310b981%22/></svg>">
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Highlight.js for Code Highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  
+  <!-- Marked.js for Markdown Rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  
+  <!-- JSZip & FileSaver for Browser-Side Project Zip Generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme">
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Main Application Wrapper -->
+  <div class="app-layout">
+    
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="logo-orb">
+            <span class="pulse-ring"></span>
+            <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <h2>Elex <span class="accent-text">AI</span></h2>
+            <span class="badge-status">v2.5 • Frontier</span>
+          </div>
+        </div>
+        <button id="btn-collapse-sidebar" class="icon-btn mobile-only" title="Close Sidebar">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div class="sidebar-action">
+        <button id="btn-new-chat" class="btn-primary w-full">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>New Conversation</span>
+        </button>
+      </div>
+
+      <!-- Quick Preset Starters -->
+      <div class="sidebar-section">
+        <span class="section-label">Modes & Presets</span>
+        <div class="preset-pills">
+          <button class="preset-pill" data-prompt="Design and write a complete, responsive modern landing page for an AI developer platform in HTML, CSS, and JS with interactive demo components.">
+            <span class="pill-dot"></span> Full-Stack Web App
+          </button>
+          <button class="preset-pill" data-prompt="Create an interactive Cyberpunk Retro Synthwave Pomodoro Timer with sound synthesizer and neon theme.">
+            <span class="pill-dot"></span> Interactive Artifact
+          </button>
+          <button class="preset-pill" data-prompt="Write a high-performance Python concurrent async crawler with rate-limiting, proxy rotation, and JSON schema validation.">
+            <span class="pill-dot"></span> Python Architecture
+          </button>
+          <button class="preset-pill" data-prompt="Optimize and architect an advanced multi-agent system prompt for complex software engineering and code review.">
+            <span class="pill-dot"></span> Prompt Engineering
+          </button>
+        </div>
+      </div>
+
+      <!-- Chat History -->
+      <div class="sidebar-section flex-1 overflow-y-auto">
+        <div class="section-label-row">
+          <span class="section-label">Recent Sessions</span>
+          <button id="btn-clear-history" class="text-xs text-muted hover-green" title="Clear all history">Clear All</button>
+        </div>
+        <div id="chat-history-list" class="chat-history-list">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div class="engine-indicator">
+          <div class="status-dot online"></div>
+          <div class="engine-info">
+            <span class="engine-title" id="sidebar-engine-name">Elex Native Brain</span>
+            <span class="engine-mode">Zero-Config • Instant</span>
+          </div>
+        </div>
+        <button id="btn-open-settings" class="settings-trigger-btn" title="Configure APIs and Plugins">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          <span>Settings & Keys</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="main-workspace">
+      
+      <!-- Top Navigation Bar -->
+      <header class="top-navbar">
+        <div class="nav-left">
+          <button id="btn-toggle-sidebar" class="icon-btn" title="Toggle Sidebar">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+          
+          <!-- Model Selector Dropdown -->
+          <div class="model-dropdown-wrapper">
+            <div class="model-select-pill" id="model-select-btn">
+              <span class="model-icon">⚡</span>
+              <span id="current-model-display" class="model-name">Elex Native Brain</span>
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            
+            <div id="model-dropdown-menu" class="dropdown-menu hidden">
+              <div class="dropdown-category">Built-In (Free & Instant)</div>
+              <div class="dropdown-item active" data-model="native">
+                <div class="item-title">Elex Native Brain</div>
+                <div class="item-desc">Frontier logic, code generation & problem solver</div>
+              </div>
+              
+              <div class="dropdown-category">Connected APIs (Bring Your Key)</div>
+              <div class="dropdown-item" data-model="gemini-2.5-flash">
+                <div class="item-title">Google Gemini 2.5 Flash</div>
+                <div class="item-desc">High speed, ultra reasoning</div>
+              </div>
+              <div class="dropdown-item" data-model="gemini-1.5-pro">
+                <div class="item-title">Google Gemini 1.5 Pro</div>
+                <div class="item-desc">Deep multimodal reasoning</div>
+              </div>
+              <div class="dropdown-item" data-model="gpt-4o">
+                <div class="item-title">OpenAI GPT-4o</div>
+                <div class="item-desc">Omni intelligence</div>
+              </div>
+              <div class="dropdown-item" data-model="gpt-4o-mini">
+                <div class="item-title">OpenAI GPT-4o Mini</div>
+                <div class="item-desc">Fast and cost-effective</div>
+              </div>
+              <div class="dropdown-item" data-model="claude-3-5-sonnet">
+                <div class="item-title">Claude 3.5 Sonnet</div>
+                <div class="item-desc">Industry-leading coding architecture</div>
+              </div>
+              <div class="dropdown-item" data-model="openrouter">
+                <div class="item-title">OpenRouter (DeepSeek / Llama)</div>
+                <div class="item-desc">Open-source & reasoning clusters</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-right">
+          <!-- Active Plugins Quick Badges -->
+          <div class="active-plugins-bar" id="active-plugins-bar">
+            <!-- Dynamic pills -->
+          </div>
+
+          <!-- Sandbox / Artifact Toggle Button -->
+          <button id="btn-toggle-sandbox" class="btn-subtle" title="Toggle Live Code Sandbox">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            <span>Live Sandbox</span>
+            <span id="sandbox-badge-count" class="badge-count hidden">1</span>
+          </button>
+
+          <!-- Export & Clear Options -->
+          <button id="btn-export-chat" class="icon-btn" title="Export Conversation">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          </button>
+          
+          <button id="btn-clear-chat" class="icon-btn" title="Clear Current Chat">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Split Grid (Chat + Artifacts Sandbox) -->
+      <div class="workspace-body" id="workspace-body">
+        
+        <!-- Chat Column -->
+        <div class="chat-column" id="chat-column">
+          <div id="chat-messages" class="chat-messages">
+            
+            <!-- Hero Welcome Card (Visible when chat empty) -->
+            <div id="welcome-hero" class="welcome-hero">
+              <div class="hero-glow"></div>
+              <div class="hero-header">
+                <div class="hero-emblem">
+                  <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                    <polyline points="2 17 12 22 22 17"></polyline>
+                    <polyline points="2 12 12 17 22 12"></polyline>
+                  </svg>
+                </div>
+                <h1>Welcome to <span class="neon-emerald">Elex AI</span></h1>
+                <p class="hero-subtitle">The next-generation autonomous AI studio. High-speed reasoning, instant live code execution, and multi-model flexibility.</p>
+              </div>
+
+              <div class="feature-grid">
+                <div class="feature-card">
+                  <div class="feature-icon">⚡</div>
+                  <h3>Zero-Config Brain</h3>
+                  <p>Start chatting immediately with full intelligence and code generation capabilities without entering API keys.</p>
+                </div>
+                <div class="feature-card">
+                  <div class="feature-icon">💻</div>
+                  <h3>Live Sandbox & Zip</h3>
+                  <p>Generate HTML/CSS/JS artifacts, test in real-time iframe preview, and download as ready-to-use .ZIP bundles.</p>
+                </div>
+                <div class="feature-card">
+                  <div class="feature-icon">🔑</div>
+                  <h3>Multi-Model Freedom</h3>
+                  <p>Switch between Elex Native, Gemini, GPT-4o, Claude 3.5, and OpenRouter with client-side encrypted key storage.</p>
+                </div>
+                <div class="feature-card">
+                  <div class="feature-icon">🧩</div>
+                  <h3>Modular Plugins</h3>
+                  <p>Web search simulation, file analyzer, live code previewer, and prompt optimizer at your fingertips.</p>
+                </div>
+              </div>
+
+              <div class="starter-suggestions">
+                <span class="suggestion-title">Try one of these prompts:</span>
+                <div class="suggestions-list">
+                  <button class="starter-card" data-prompt="Build an interactive glassmorphism Kanban Board with drag-and-drop tasks, columns, and localStorage saving.">
+                    <span class="starter-badge">Frontend</span>
+                    <h4>Interactive Kanban Board</h4>
+                    <p>Complete HTML, CSS, and JS with animations and persistent storage.</p>
+                  </button>
+                  <button class="starter-card" data-prompt="Build a sleek Audio Synthesizer keyboard in HTML/JS using Web Audio API with oscillators and visualizer.">
+                    <span class="starter-badge">Web Audio</span>
+                    <h4>Retro Audio Synthesizer</h4>
+                    <p>Play piano notes with real-time waveform canvas visualizer.</p>
+                  </button>
+                  <button class="starter-card" data-prompt="Create a real-time Markdown live editor with word counter, PDF export logic, and split preview.">
+                    <span class="starter-badge">Productivity</span>
+                    <h4>Markdown Live Studio</h4>
+                    <p>Dual-pane editor with instant parsing and export capabilities.</p>
+                  </button>
+                  <button class="starter-card" data-prompt="Write an algorithmic deep dive on distributed consensus protocols (Raft vs Paxos) with ASCII flowcharts and Python simulator.">
+                    <span class="starter-badge">Engineering</span>
+                    <h4>Distributed Consensus</h4>
+                    <p>Raft vs Paxos architecture analysis with practical implementation.</p>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Input Sticky Footer -->
+          <div class="chat-input-wrapper">
+            
+            <!-- File Analyzer / Attachment Preview Pill -->
+            <div id="attachment-preview-bar" class="attachment-preview-bar hidden">
+              <div class="file-pill">
+                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                <span id="attachment-filename" class="filename">data.json</span>
+                <span id="attachment-filesize" class="filesize">(1.2 KB)</span>
+                <button id="btn-remove-attachment" class="remove-btn">&times;</button>
+              </div>
+            </div>
+
+            <!-- Chat Form -->
+            <form id="chat-form" class="chat-form">
+              <div class="input-controls-left">
+                <!-- File Attachment Trigger -->
+                <input type="file" id="file-input" class="hidden" accept=".txt,.json,.csv,.js,.ts,.py,.html,.css,.md,.xml,.sql,.yml,.yaml">
+                <button type="button" id="btn-attach-file" class="action-btn" title="Attach code, text, CSV, or JSON file">
+                  <svg viewBox="0 0 24 24" width="19" height="19" stroke="currentColor" stroke-width="2" fill="none"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+                </button>
+              </div>
+
+              <textarea 
+                id="user-input" 
+                rows="1" 
+                placeholder="Ask Elex anything, code an app, solve a problem, or design a system... (Shift+Enter for newline)"
+                autocomplete="off"
+              ></textarea>
+
+              <div class="input-controls-right">
+                <button type="submit" id="btn-send" class="send-btn" title="Send message (Enter)">
+                  <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.2" fill="none">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                </button>
+              </div>
+            </form>
+
+            <div class="input-footer-meta">
+              <span class="meta-tip"><kbd>Enter</kbd> to send • <kbd>Shift + Enter</kbd> for new line</span>
+              <span class="meta-status" id="footer-plugins-indicator">Plugins: Web Search • Sandbox • Optimizer Active</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Code Sandbox / Artifacts Drawer Panel -->
+        <div class="sandbox-panel hidden" id="sandbox-panel">
+          <div class="sandbox-header">
+            <div class="sandbox-title-group">
+              <span class="sandbox-dot"></span>
+              <h3>Artifact & Sandbox Studio</h3>
+              <span id="sandbox-filename-badge" class="sandbox-tag">index.html</span>
+            </div>
+            
+            <div class="sandbox-actions">
+              <!-- Tab Switchers -->
+              <div class="sandbox-tabs">
+                <button class="sandbox-tab active" data-tab="preview">
+                  <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  Live Run
+                </button>
+                <button class="sandbox-tab" data-tab="code">
+                  <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                  Source
+                </button>
+                <button class="sandbox-tab" data-tab="console">
+                  <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                  Logs (<span id="console-count">0</span>)
+                </button>
+              </div>
+
+              <!-- Action buttons -->
+              <button id="btn-refresh-sandbox" class="icon-btn-sm" title="Re-run / Refresh Sandbox">
+                <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+              </button>
+
+              <button id="btn-download-zip" class="btn-primary-sm" title="Download Complete Project as .ZIP">
+                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>Export .ZIP</span>
+              </button>
+
+              <button id="btn-popout-sandbox" class="icon-btn-sm" title="Open preview in new tab">
+                <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </button>
+
+              <button id="btn-close-sandbox" class="icon-btn-sm" title="Close Sandbox">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Sandbox Content Body -->
+          <div class="sandbox-content">
+            <!-- View 1: Live Iframe Preview -->
+            <div id="sandbox-view-preview" class="sandbox-view active">
+              <iframe id="sandbox-iframe" sandbox="allow-scripts allow-modals" title="Elex Live Runner Sandbox"></iframe>
+            </div>
+
+            <!-- View 2: Code Editor/Viewer -->
+            <div id="sandbox-view-code" class="sandbox-view">
+              <pre><code id="sandbox-code-display" class="language-html"></code></pre>
+            </div>
+
+            <!-- View 3: Virtual Console -->
+            <div id="sandbox-view-console" class="sandbox-view">
+              <div id="sandbox-console-log" class="console-output-box">
+                <div class="console-line system">[System] Sandbox initialized in secure isolation mode.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Settings & Configuration Modal -->
+  <div id="settings-modal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <svg viewBox="0 0 24 24" width="22" height="22" stroke="#10b981" stroke-width="2" fill="none"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          <h3>Elex AI Settings & Capabilities</h3>
+        </div>
+        <button id="btn-close-settings" class="icon-btn">&times;</button>
+      </div>
+
+      <!-- Settings Nav Tabs -->
+      <div class="settings-tabs">
+        <button class="settings-nav-btn active" data-tab="tab-apikeys">API Key Manager</button>
+        <button class="settings-nav-btn" data-tab="tab-plugins">Plugin Architecture</button>
+        <button class="settings-nav-btn" data-tab="tab-preferences">Model & Prompt Tuning</button>
+        <button class="settings-nav-btn" data-tab="tab-deployment">Netlify Deployment</button>
+      </div>
+
+      <!-- Modal Body Tabs -->
+      <div class="modal-body">
+        
+        <!-- Tab 1: API Keys -->
+        <div id="tab-apikeys" class="settings-tab-pane active">
+          <div class="alert-box-info">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <div>
+              <strong>Secure Client-Side Storage:</strong> API keys are saved exclusively in your browser's <code>localStorage</code> and are sent directly to official provider endpoints. No backend database collects your credentials.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="key-gemini">Google Gemini API Key</label>
+            <div class="input-with-action">
+              <input type="password" id="key-gemini" placeholder="AIzaSy...">
+              <button type="button" class="btn-show-key" data-target="key-gemini">Show</button>
+            </div>
+            <span class="field-hint">Supports Gemini 2.5 Flash, Gemini 1.5 Pro. <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Get Google AI Key &rarr;</a></span>
+          </div>
+
+          <div class="form-group">
+            <label for="key-openai">OpenAI API Key</label>
+            <div class="input-with-action">
+              <input type="password" id="key-openai" placeholder="sk-proj-...">
+              <button type="button" class="btn-show-key" data-target="key-openai">Show</button>
+            </div>
+            <span class="field-hint">Supports GPT-4o, GPT-4o-mini. <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">Get OpenAI Key &rarr;</a></span>
+          </div>
+
+          <div class="form-group">
+            <label for="key-anthropic">Anthropic API Key</label>
+            <div class="input-with-action">
+              <input type="password" id="key-anthropic" placeholder="sk-ant-api...">
+              <button type="button" class="btn-show-key" data-target="key-anthropic">Show</button>
+            </div>
+            <span class="field-hint">Supports Claude 3.5 Sonnet. <a href="https://console.anthropic.com/" target="_blank" rel="noopener">Get Anthropic Key &rarr;</a></span>
+          </div>
+
+          <div class="form-group">
+            <label for="key-openrouter">OpenRouter API Key</label>
+            <div class="input-with-action">
+              <input type="password" id="key-openrouter" placeholder="sk-or-v1-...">
+              <button type="button" class="btn-show-key" data-target="key-openrouter">Show</button>
+            </div>
+            <span class="field-hint">Access DeepSeek-R1, DeepSeek-V3, Llama 3.3, Mistral. <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">Get OpenRouter Key &rarr;</a></span>
+          </div>
+
+          <div class="form-group">
+            <label for="custom-base-url">Custom Endpoint / Proxy Base URL (Optional)</label>
+            <input type="text" id="custom-base-url" placeholder="https://api.openai.com/v1">
+            <span class="field-hint">Compatible with OpenAI-standard gateways, Ollama local proxies, or enterprise bridges.</span>
+          </div>
+        </div>
+
+        <!-- Tab 2: Plugins -->
+        <div id="tab-plugins" class="settings-tab-pane">
+          <p class="tab-intro">Toggle modular extensions to augment Elex AI's reasoning, code execution, and data inspection.</p>
+
+          <div class="plugin-list">
+            
+            <!-- Plugin 1 -->
+            <div class="plugin-item">
+              <div class="plugin-info">
+                <div class="plugin-badge">🌐 Web</div>
+                <div>
+                  <h4>Web Search Simulation</h4>
+                  <p>Augments answers with simulated real-time information retrieval, domain citations, and reference links.</p>
+                </div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="plugin-websearch" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <!-- Plugin 2 -->
+            <div class="plugin-item">
+              <div class="plugin-info">
+                <div class="plugin-badge">💻 Sandbox</div>
+                <div>
+                  <h4>Live Code Runner & Sandbox Preview</h4>
+                  <p>Automatically renders HTML/CSS/JS artifacts into an isolated runner panel with one-click full project ZIP export.</p>
+                </div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="plugin-coderunner" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <!-- Plugin 3 -->
+            <div class="plugin-item">
+              <div class="plugin-info">
+                <div class="plugin-badge">📁 Inspector</div>
+                <div>
+                  <h4>File Analyzer & Inspector</h4>
+                  <p>Enables drag-and-drop parsing of source code, CSVs, JSON data, and Markdown logs for instant code reviews and auditing.</p>
+                </div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="plugin-fileanalyzer" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <!-- Plugin 4 -->
+            <div class="plugin-item">
+              <div class="plugin-info">
+                <div class="plugin-badge">🎯 Engine</div>
+                <div>
+                  <h4>Prompt Optimizer & Chain-of-Thought</h4>
+                  <p>Silently structures prompts with role frameworks, verification checks, and reasoning scaffolding for frontier-level precision.</p>
+                </div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="plugin-promptopt" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Tab 3: Model & Prompt Tuning -->
+        <div id="tab-preferences" class="settings-tab-pane">
+          <div class="form-group">
+            <label for="pref-system-prompt">Custom Persona & System Instructions</label>
+            <textarea id="pref-system-prompt" rows="5" placeholder="You are Elex AI, an elite frontier research scientist, polymath coder, and design architect..."></textarea>
+            <span class="field-hint">Overrides default instructions passed to AI models.</span>
+          </div>
+
+          <div class="form-group">
+            <div class="slider-header">
+              <label for="pref-temperature">Creativity & Temperature</label>
+              <span id="temp-display" class="slider-val">0.7</span>
+            </div>
+            <input type="range" id="pref-temperature" min="0" max="1" step="0.05" value="0.7">
+            <span class="field-hint">Lower values (0.2) produce deterministic, structured code. Higher values (0.8) boost creative writing and UI ideas.</span>
+          </div>
+
+          <div class="form-group">
+            <label>Data Management</label>
+            <div class="button-row">
+              <button type="button" id="btn-export-all-data" class="btn-subtle">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Backup All Data (JSON)
+              </button>
+              <button type="button" id="btn-reset-defaults" class="btn-danger-subtle">
+                Reset All Settings to Default
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4: Netlify Deployment Guide -->
+        <div id="tab-deployment" class="settings-tab-pane">
+          <div class="deploy-banner">
+            <div class="deploy-icon">🚀</div>
+            <div>
+              <h4>Netlify Drag-and-Drop Ready</h4>
+              <p>This entire web application is built as a zero-dependency static bundle. You can deploy it in less than 30 seconds.</p>
+            </div>
+          </div>
+
+          <div class="deploy-steps">
+            <div class="deploy-step">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <strong>Download or Clone:</strong>
+                <p>Have this repository or folder ready containing <code>index.html</code>, <code>styles.css</code>, <code>app.js</code>, and <code>netlify.toml</code>.</p>
+              </div>
+            </div>
+            <div class="deploy-step">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <strong>Deploy to Netlify:</strong>
+                <p>Visit <a href="https://app.netlify.com/drop" target="_blank" rel="noopener">app.netlify.com/drop</a> and drag this folder directly into the upload circle, or connect your GitHub repo.</p>
+              </div>
+            </div>
+            <div class="deploy-step">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <strong>Instant Live URL:</strong>
+                <p>Netlify immediately provisions your custom HTTPS subdomain with automatic SSL, caching, and edge routing.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button id="btn-save-settings" class="btn-primary">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          Save & Apply Configuration
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clear Confirmation Dialog -->
+  <div id="confirm-modal" class="modal-backdrop hidden">
+    <div class="confirm-card">
+      <div class="confirm-icon">⚠️</div>
+      <h3 id="confirm-title">Clear Current Conversation?</h3>
+      <p id="confirm-desc">This will reset the current active chat window. Saved chat history can be reloaded from the sidebar anytime.</p>
+      <div class="confirm-actions">
+        <button id="btn-confirm-cancel" class="btn-subtle">Cancel</button>
+        <button id="btn-confirm-proceed" class="btn-danger">Proceed</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
